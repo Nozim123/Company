@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meridien Market Magic: Mapping Media to Maximize Momentum | Godrej GCPL</title>
+  <link rel="icon" type="image/png" href="https://assets.codepen.io/14735312/Godrej_favicon.png">
+
+  <style>
+    /* CSS Custom Properties for Theming */
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #3b82f6;
+      --success-color: #10b981;
+      --warning-color: #f59e0b;
+      --danger-color: #ef4444;
+      --dark-bg: #111827;
+      --light-bg: #f9fafb;
+      --card-bg: #ffffff;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* High Contrast Mode Support */
+    @media (prefers-contrast: high) {
+      :root {
+        --primary-color: #000080;
+        --secondary-color: #0066ff;
+        --success-color: #008000;
+        --warning-color: #ff8c00;
+        --danger-color: #ff0000;
+        --text-primary: #000000;
+        --text-secondary: #333333;
+        --border-color: #000000;
+      }
+    }
+
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Typography Scale */
+    .text-xs {
+      font-size: 0.75rem;
+    }
+
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    .text-base {
+      font-size: 1rem;
+    }
+
+    .text-lg {
+      font-size: 1.125rem;
+    }
+
+    .text-xl {
+      font-size: 1.25rem;
+    }
+
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+
+    .text-3xl {
+      font-size: 1.875rem;
+    }
+
+    /* Layout Structure */
+    .app-container {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      grid-template-rows: auto 1fr;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Header */
+    .header {
+      grid-column: 1 / -1;
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      gap: 1rem;
+    }
+
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .breadcrumb {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .breadcrumb span:not(:last-child)::after {
+      content: "•";
+      margin-left: 0.5rem;
+    }
+
+    .company-logo {
+      height: 40px;
+      object-fit: contain;
+    }
+
+    /* Header Right Section */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    /* Country Selector */
+    .country-selector-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .country-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .country-select {
+      padding: 0.375rem 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background-color: white;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      min-width: 80px;
+    }
+
+    .country-select:hover {
+      border-color: var(--secondary-color);
+    }
+
+    .country-select:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+      .country-label {
+        display: none;
+      }
+
+      .country-select {
+        min-width: 60px;
+        padding: 0.375rem 0.5rem;
+      }
+
+      /* Header mobile adjustments */
+      .header {
+        padding: 0.75rem 1rem;
+      }
+
+      .header h1 {
+        font-size: 1.25rem;
+        /* Smaller on mobile */
+      }
+
+      .header h1 svg {
+        width: 20px !important;
+        height: 20px !important;
+      }
+
+      .breadcrumb {
+        font-size: 0.75rem;
+        gap: 0.25rem;
+      }
+
+      .company-logo {
+        height: 30px;
+        /* Smaller logo on mobile */
+      }
+
+      .header-right {
+        gap: 0.5rem;
+        /* Reduce gap on mobile */
+      }
+    }
+
+    /* Even smaller screens */
+    @media (max-width: 640px) {
+      .header h1 {
+        font-size: 1.1rem;
+      }
+
+      .breadcrumb {
+        display: none;
+        /* Hide breadcrumb on very small screens */
+      }
+
+      /* Or alternatively, show only essential breadcrumb info */
+      /* .breadcrumb span:not(:last-child) {
+        display: none;
+    } */
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: var(--card-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 1.5rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 73px);
+    }
+
+    .sidebar-section {
+      margin-bottom: 2rem;
+      position: relative;
+      /* Add this */
+      overflow: visible;
+      /* Add this */
+    }
+
+    .sidebar-section h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Info Icon and Tooltip */
+    .info-icon {
+      display: inline-block;
+      cursor: help;
+      font-size: 1rem;
+      margin-left: 0.5rem;
+      position: relative;
+      vertical-align: middle;
+      color: var(--secondary-color);
+      /* Add this line */
+    }
+
+    .info-tooltip {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark-bg);
+      color: white;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.75rem;
+      white-space: normal;
+      width: 280px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity var(--transition-fast), visibility var(--transition-fast);
+      margin-top: 0.5rem;
+      z-index: 10000;
+      text-align: left;
+      line-height: 1.5;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .info-icon:hover .info-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .info-tooltip ul {
+      margin: 0.5rem 0 0 0;
+      padding-left: 1rem;
+      list-style: none;
+    }
+
+    .info-tooltip li {
+      margin-bottom: 0.5rem;
+    }
+
+    .info-tooltip strong {
+      color: #93c5fd;
+    }
+
+    /* Strategy Presets */
+    .strategy-presets {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      position: relative;
+      /* Add this */
+      z-index: 1;
+      /* Add this */
+    }
+
+    .preset-btn {
+      padding: 0.75rem;
+      border: 2px solid var(--border-color);
+      background-color: var(--card-bg);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      min-height: 44px;
+      position: relative;
+      /* overflow: hidden;*/
+    }
+
+    .preset-btn:hover {
+      border-color: var(--secondary-color);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .preset-btn.active {
+      background-color: var(--secondary-color);
+      color: white;
+      border-color: var(--secondary-color);
+    }
+
+    .preset-btn:focus-visible {
+      outline: 3px solid var(--secondary-color);
+      outline-offset: 2px;
+    }
+
+    /* Preset Tooltip */
+    .preset-tooltip {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark-bg);
+      color: white;
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      font-size: 0.75rem;
+      white-space: normal;
+      width: 250px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-fast);
+      margin-top: 0.5rem;
+      z-index: 10000;
+      text-align: left;
+      line-height: 1.4;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .preset-btn:hover .preset-tooltip {
+      opacity: 1;
+    }
+
+    .preset-tooltip strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: white;
+    }
+
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background-color: white;
+      font-size: 0.875rem;
+      transition: all var(--transition-fast);
+      min-height: 44px;
+      cursor: pointer;
+    }
+
+    .form-select:hover {
+      border-color: var(--secondary-color);
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    /* Weight Sliders */
+    .weight-group {
+      margin-bottom: 1rem;
+    }
+
+    .weight-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.25rem;
+    }
+
+    .weight-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .weight-value {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--secondary-color);
+      min-width: 40px;
+      text-align: right;
+    }
+
+    .weight-slider {
+      width: 100%;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--border-color);
+      border-radius: 3px;
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+
+    .weight-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      background: var(--secondary-color);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .weight-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      background: var(--secondary-color);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .weight-slider:hover::-webkit-slider-thumb {
+      transform: scale(1.2);
+      box-shadow: var(--shadow-md);
+    }
+
+    .weight-slider:hover::-moz-range-thumb {
+      transform: scale(1.2);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:focus-visible {
+      outline: 3px solid var(--secondary-color);
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background-color: var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: #d1d5db;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 2rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 73px);
+    }
+
+    /* Stats Cards */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-normal);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .stat-trend {
+      font-size: 0.75rem;
+      color: var(--success-color);
+      margin-top: 0.5rem;
+    }
+
+    /* Top Market Item */
+    .top-market-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.25rem 0;
+      font-weight: 600;
+      color: var(--primary-color);
+      font-size: 1.1rem;
+    }
+
+    .top-market-item span {
+      font-weight: 700;
+    }
+
+    /* Insights Section */
+    .insights-container {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .insights-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .insights-icon {
+      width: 24px;
+      height: 24px;
+      background-color: var(--secondary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.875rem;
+    }
+
+    .insights-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .insights-content {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .insight-recommendation {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #eff6ff;
+      border-left: 4px solid var(--secondary-color);
+      border-radius: var(--radius-sm);
+    }
+
+    /* Map Container */
+    .map-container {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+      min-height: 550px;
+      position: relative;
+    }
+
+    .map-controls {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 1000;
+    }
+
+    .map-control-btn {
+      padding: 0.5rem 1rem;
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .map-control-btn:hover {
+      background-color: var(--light-bg);
+    }
+
+    .map-control-btn.active {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    #map {
+      width: 100%;
+      height: 500px;
+      border-radius: var(--radius-md);
+    }
+
+    /* Table Container */
+    .table-container {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .table-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .export-btn {
+      padding: 0.5rem 1rem;
+      background-color: var(--success-color);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .export-btn:hover {
+      background-color: #059669;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Data Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      background-color: var(--light-bg);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 2px solid var(--border-color);
+      cursor: pointer;
+      user-select: none;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .data-table th:hover {
+      background-color: #f3f4f6;
+    }
+
+    .data-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.875rem;
+    }
+
+    .data-table tr {
+      transition: background-color var(--transition-fast);
+    }
+
+    .data-table tbody tr:hover {
+      background-color: var(--light-bg);
+    }
+
+    .data-table tbody tr.expandable {
+      cursor: pointer;
+    }
+
+    .data-table tbody tr.expandable:hover {
+      background-color: #eff6ff;
+    }
+
+    /* Header Tooltip */
+    .data-table th {
+      position: relative;
+    }
+
+    .header-tooltip {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark-bg);
+      color: white;
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      font-size: 0.75rem;
+      white-space: normal;
+      width: 220px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity var(--transition-fast), visibility var(--transition-fast);
+      margin-top: 0.5rem;
+      z-index: 10000;
+      text-align: left;
+      line-height: 1.4;
+      font-weight: normal;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .data-table th:hover .header-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .header-tooltip strong {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .header-tooltip em {
+      color: #93c5fd;
+      font-style: normal;
+    }
+
+    /* Score Cells */
+    .score-cell {
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      min-width: 50px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+
+    .score-cell:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .score-cell.editing {
+      padding: 0;
+    }
+
+    .score-input {
+      width: 100%;
+      padding: 0.25rem;
+      border: 2px solid var(--secondary-color);
+      border-radius: var(--radius-sm);
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .score-cell.green {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .score-cell.yellow {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .score-cell.red {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* MOS Cell */
+    .mos-cell {
+      font-weight: 700;
+      font-size: 1rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .mos-progress {
+      width: 60px;
+      height: 6px;
+      background-color: var(--border-color);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mos-progress-bar {
+      height: 100%;
+      background-color: var(--success-color);
+      transition: width var(--transition-normal);
+    }
+
+    /* Expanded Row */
+    .expanded-row {
+      display: none;
+    }
+
+    .expanded-row.show {
+      display: table-row;
+    }
+
+    .expanded-content {
+      padding: 1.5rem;
+      background-color: #f9fafb;
+      border-radius: var(--radius-md);
+      margin: 0.5rem;
+    }
+
+    .expanded-header {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .metric-item {
+      padding: 0.75rem;
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-value {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .market-summary {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* Collapsible Methodology */
+    .methodology-section {
+      margin-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1rem;
+    }
+
+    .methodology-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: background-color var(--transition-fast);
+    }
+
+    .methodology-toggle:hover {
+      background-color: var(--light-bg);
+    }
+
+    .methodology-toggle h3 {
+      margin: 0;
+    }
+
+    .methodology-arrow {
+      transition: transform var(--transition-fast);
+    }
+
+    .methodology-toggle.open .methodology-arrow {
+      transform: rotate(180deg);
+    }
+
+    .methodology-content {
+      display: none;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    .methodology-content.show {
+      display: block;
+    }
+
+    .methodology-item {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background-color: var(--light-bg);
+      border-radius: var(--radius-sm);
+    }
+
+    .methodology-item strong {
+      color: var(--primary-color);
+    }
+
+    .methodology-item ul {
+      list-style-type: disc;
+    }
+
+    .methodology-item p {
+      margin: 0.25rem 0;
+    }
+
+    /* Loading States */
+    .loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .loading::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid var(--secondary-color);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Mobile Responsive */
+    .mobile-menu-btn {
+      display: none;
+      padding: 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 1024px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: -300px;
+        top: 73px;
+        width: 300px;
+        height: calc(100vh - 73px);
+        z-index: 1000;
+        transition: left var(--transition-normal);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+
+      .data-table {
+        font-size: 0.75rem;
+      }
+
+      .data-table th,
+      .data-table td {
+        padding: 0.5rem;
+      }
+
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Overlay for mobile sidebar */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .sidebar-overlay.show {
+      display: block;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn var(--transition-normal) ease-out;
+    }
+
+    /* Reduced Motion Support */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Print Styles */
+    @media print {
+
+      .sidebar,
+      .header img,
+      .export-btn,
+      .map-container {
+        display: none;
+      }
+
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+
+      .main-content {
+        padding: 0;
+      }
+
+      .data-table {
+        font-size: 10pt;
+      }
+    }
+
+    /* Accessibility - Focus Visible */
+    *:focus {
+      outline: none;
+    }
+
+    *:focus-visible {
+      outline: 3px solid var(--secondary-color);
+      outline-offset: 2px;
+    }
+
+    /* Skip to Content Link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--primary-color);
+      color: white;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      z-index: 10000;
+    }
+
+    .skip-link:focus {
+      top: 10px;
+      left: 10px;
+    }
+
+    /* Context Menu */
+    .context-menu {
+      position: fixed;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      padding: 0.5rem 0;
+      z-index: 10000;
+      display: none;
+      min-width: 150px;
+    }
+
+    .context-menu.show {
+      display: block;
+    }
+
+    .context-menu-item {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background-color var(--transition-fast);
+    }
+
+    .context-menu-item:hover {
+      background-color: var(--light-bg);
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 10000;
+    }
+
+    .toast {
+      background: var(--dark-bg);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 0.5rem;
+      box-shadow: var(--shadow-lg);
+      animation: slideIn var(--transition-normal) ease-out;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+      cursor: help;
+    }
+
+    .tooltip-content {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark-bg);
+      color: white;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-fast);
+      margin-bottom: 0.5rem;
+    }
+
+    .tooltip:hover .tooltip-content {
+      opacity: 1;
+    }
+
+    /* Map Legend */
+    .map-legend {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      background: white;
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      font-size: 0.75rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .legend-color {
+      width: 20px;
+      height: 12px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header" role="banner">
+      <div class="header-content">
+
+        <h1>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style="vertical-align: middle; margin-right: 0.5rem;">
+            <defs>
+              <linearGradient id="meridienGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <circle cx="12" cy="12" r="10" stroke="#1e3a8a" stroke-width="2" />
+            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="url(#meridienGrad)" />
+            <circle cx="12" cy="12" r="3" fill="white" />
+          </svg>
+          Meridien Market Magic
+        </h1>
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <span id="breadcrumb-category">Air Freshener</span>
+          <span id="breadcrumb-view">City Level</span>
+          <span id="breadcrumb-status">All Markets</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="country-selector-wrapper">
+          <label for="countrySelect" class="country-label">Country:</label>
+          <select id="countrySelect" class="country-select">
+            <option value="IN" selected>IN 🇮🇳</option>
+            <option value="ID">ID 🇮🇩</option>
+            <option value="ZA">ZA 🇿🇦</option>
+            <option value="AR">AR 🇦🇷</option>
+          </select>
+        </div>
+
+      </div>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18"></path>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" role="complementary">
+      <div class="sidebar-section">
+        <h3>Market Parameters</h3>
+        <div class="form-group">
+          <label for="categorySelect" class="form-label">1. Select Category</label>
+          <select id="categorySelect" class="form-select">
+            <option value="Air Freshener">Air Freshener</option>
+            <option value="Hair Color">Hair Color</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="viewSelect" class="form-label">2. Select View Level</label>
+          <select id="viewSelect" class="form-select">
+            <option value="city">City Level</option>
+            <option value="state">State Level</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>
+          3. Strategy Presets
+          <span class="info-icon" title="Click for details">
+            <span class="info-icon" title="Click for details">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 1a7 7 0 110 14A7 7 0 018 1zm0 10.5a.75.75 0 01.75.75v.5a.75.75 0 01-1.5 0v-.5A.75.75 0 018 11.5zm0-8a.75.75 0 01.75.75v5.5a.75.75 0 01-1.5 0v-5.5A.75.75 0 018 3.5z" />
+              </svg>
+
+              <div class="info-tooltip">
+                <strong>Strategy Presets Guide:</strong>
+                <ul>
+                  <li><strong>Growth:</strong> Prioritizes markets with high category development potential and strong media responsiveness. Best for aggressive expansion.</li>
+                  <li><strong>Defensive:</strong> Emphasizes historical performance and competitive dynamics. Ideal for protecting market share in mature markets.</li>
+                  <li><strong>Balanced:</strong> Equal focus across all factors for comprehensive market evaluation. Recommended starting point.</li>
+                  <li><strong>Innovation:</strong> Focuses on consumer engagement and brand development opportunities. Perfect for launching new products.</li>
+                </ul>
+              </div>
+            </span>
+        </h3>
+        <div class="strategy-presets" role="group" aria-label="Strategy presets">
+          <button class="preset-btn" data-preset="growth" aria-pressed="false">
+            <div>Growth</div>
+            <div class="text-xs">Focus on expansion</div>
+          </button>
+          <button class="preset-btn" data-preset="defensive" aria-pressed="false">
+            <div>Defensive</div>
+            <div class="text-xs">Protect position</div>
+          </button>
+          <button class="preset-btn active" data-preset="balanced" aria-pressed="true">
+            <div>Balanced</div>
+            <div class="text-xs">Mixed approach</div>
+          </button>
+          <button class="preset-btn" data-preset="innovation" aria-pressed="false">
+            <div>Innovation</div>
+            <div class="text-xs">New opportunities</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>4. Heuristic Calibration</h3>
+        <div id="weightSliders">
+          <!-- Weight sliders will be populated by JavaScript -->
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="recalculateBtn">Recalculate</button>
+          <button class="btn btn-secondary" id="resetWeightsBtn">Reset</button>
+        </div>
+      </div>
+
+      <div class="methodology-section">
+        <div class="methodology-toggle" id="methodologyToggle">
+          <h3>Meridien Heuristic Model</h3>
+          <svg class="methodology-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+          </svg>
+        </div>
+
+        <div class="methodology-content" id="methodologyContent">
+          <div class="methodology-item">
+            <strong>MOS Formula:</strong>
+            <p>Market Opportunity Score = Σ(Score × Weight) for all 6 heuristics</p>
+            <p style="font-size: 0.75rem; margin-top: 0.5rem;">The MOS represents the "size of prize" - a composite score indicating market potential based on multiple business factors.</p>
+          </div>
+
+          <div class="methodology-item">
+            <strong>Score Components:</strong>
+            <div style="margin-top: 0.5rem;">
+              <p><strong>1. HMP (Historical Media Performance)</strong></p>
+              <p style="font-size: 0.8rem; margin-left: 1rem;">
+                <em>Description:</em> Measures past media campaign effectiveness and ROI<br>
+                <em>Data Source:</em> Campaign_Performance_2022-2024.xlsx<br>
+                <em>Calculation:</em> (Sales Lift % × Media Efficiency Index) / 100<br>
+                <em>Formula:</em> HMP = Σ(Campaign ROI × Weight) / Total Campaigns
+              </p>
+
+              <p style="margin-top: 0.75rem;"><strong>2. CA (Competitive Analysis)</strong></p>
+              <p style="font-size: 0.8rem; margin-left: 1rem;">
+                <em>Description:</em> Inverse measure of competitive intensity in market<br>
+                <em>Data Source:</em> Competitive_Landscape_Q4_2024.csv<br>
+                <em>Calculation:</em> 100 - (Competitor SOV × Market Concentration)<br>
+                <em>Formula:</em> CA = (1 - HHI) × 100, where HHI is Herfindahl Index
+              </p>
+
+              <p style="margin-top: 0.75rem;"><strong>3. CDS (Category Development/Size)</strong></p>
+              <p style="font-size: 0.8rem; margin-left: 1rem;">
+                <em>Description:</em> Category size and growth potential indicator<br>
+                <em>Data Source:</em> Category_Trends_India_2024.xlsx<br>
+                <em>Calculation:</em> Category Value × Growth Rate × Penetration Gap<br>
+                <em>Formula:</em> CDS = (Market Size × CAGR × (1 - Penetration%))^0.33
+              </p>
+
+              <p style="margin-top: 0.75rem;"><strong>4. BDS (Brand Development/Size)</strong></p>
+              <p style="font-size: 0.8rem; margin-left: 1rem;">
+                <em>Description:</em> Inverse of brand share indicating growth opportunity<br>
+                <em>Data Source:</em> Brand_Share_Tracker_2024.csv<br>
+                <em>Calculation:</em> (Category Size - Brand Size) / Category Size × 100<br>
+                <em>Formula:</em> BDS = (1 - Brand Market Share%) × 100
+              </p>
+
+              <p style="margin-top: 0.75rem;"><strong>5. CE (Consumer Engagement)</strong></p>
+              <p style="font-size: 0.8rem; margin-left: 1rem;">
+                <em>Description:</em> Digital engagement and consumer interest levels<br>
+                <em>Data Source:</em> Digital_Engagement_Metrics_2024.json<br>
+                <em>Calculation:</em> Weighted average of search index, social mentions, sentiment<br>
+                <em>Formula:</em> CE = (Search Index × 0.4 + Social Score × 0.3 + Sentiment × 0.3)
+              </p>
+
+              <p style="margin-top: 0.75rem;"><strong>6. DS (Distribution Strength)</strong></p>
+              <p style="font-size: 0.8rem; margin-left: 1rem;">
+                <em>Description:</em> Product availability and retail presence<br>
+                <em>Data Source:</em> Distribution_Audit_Q4_2024.xlsx<br>
+                <em>Calculation:</em> Numeric Distribution × Weighted Distribution × Visibility<br>
+                <em>Formula:</em> DS = (ND% × WD% × Visibility Score) / 100
+              </p>
+            </div>
+          </div>
+
+          <div class="methodology-item">
+            <strong>Weighting Strategies:</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.875rem;">
+              <li><strong>Growth:</strong> Emphasizes market expansion metrics</li>
+              <li><strong>Defensive:</strong> Focuses on protecting current position</li>
+              <li><strong>Balanced:</strong> Equal importance to all factors</li>
+              <li><strong>Innovation:</strong> Prioritizes consumer trends and gaps</li>
+            </ul>
+          </div>
+
+          <div class="methodology-item">
+            <strong>Score Advantages:</strong>
+            <p style="font-size: 0.875rem;">Each score provides unique strategic insights - HMP shows proven ROI markets, CA identifies low-competition opportunities, CDS reveals growth markets, BDS highlights share gain potential, CE indicates consumer readiness, and DS ensures execution feasibility.</p>
+          </div>
+
+          <div class="methodology-item">
+            <strong>Data Sources & Files Analyzed:</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.875rem;">
+              <li><strong>HMP:</strong> Campaign_Performance_2022-2024.xlsx - Historical campaign data, sales lift analysis</li>
+              <li><strong>CA:</strong> Competitive_Landscape_Q4_2024.csv - Nielsen/IRI competitive tracking</li>
+              <li><strong>CDS:</strong> Category_Trends_India_2024.xlsx - Market research, category sales data</li>
+              <li><strong>BDS:</strong> Brand_Share_Tracker_2024.csv - Brand tracking studies, market share data</li>
+              <li><strong>CE:</strong> Digital_Engagement_Metrics_2024.json - Google Trends, social listening tools</li>
+              <li><strong>DS:</strong> Distribution_Audit_Q4_2024.xlsx - Retail audit, distribution tracking</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content" role="main">
+      <!-- Stats Cards -->
+      <div class="stats-container">
+        <div class="stat-card fade-in">
+          <div class="stat-label">Total Markets</div>
+          <div class="stat-value" id="totalMarkets">13</div>
+          <div class="stat-trend">↑ City level view</div>
+        </div>
+        <div class="stat-card fade-in" style="animation-delay: 0.1s">
+          <div class="stat-label">Average Market Opportunity Score</div>
+          <div class="stat-value" id="averageMOS">82.5</div>
+          <div class="stat-trend">↑ Above threshold</div>
+        </div>
+
+        <div class="stat-card fade-in" style="animation-delay: 0.2s">
+          <div class="stat-label">Top Opportunity Markets</div>
+          <div id="topOpportunityList" style="line-height: 1.8;">
+            <div class="top-market-item">1. Mumbai <span style="color: var(--text-secondary);">87.4</span></div>
+            <div class="top-market-item">2. Delhi <span style="color: var(--text-secondary);">85.2</span></div>
+            <div class="top-market-item">3. Bangalore <span style="color: var(--text-secondary);">84.8</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Insights Section -->
+      <div class="insights-container fade-in" style="animation-delay: 0.3s">
+        <div class="insights-header">
+          <div class="insights-icon">💡</div>
+          <h2 class="insights-title">Strategic Insights & Recommendations</h2>
+        </div>
+        <div class="insights-content" id="insightsContent">
+          <p>Based on current MOS calculations, your portfolio shows strong potential across multiple markets. Mumbai and Delhi lead with scores above 85, indicating mature markets with high media responsiveness.</p>
+          <div class="insight-recommendation">
+            <strong>Recommendation:</strong> Consider increasing media spend by 15-20% in top-tier markets (MOS ≥85) while maintaining defensive positions in markets with scores between 70-84. Focus on digital channels for markets below 70 to test responsiveness before major investments.
+          </div>
+        </div>
+      </div>
+
+      <!-- Map Container -->
+      <div class="map-container fade-in" style="animation-delay: 0.4s">
+        <div class="map-controls">
+          <button class="map-control-btn active" data-metric="mos">Market Opportunity</button>
+          <button class="map-control-btn" data-metric="hmp">Media Performance</button>
+          <button class="map-control-btn" data-metric="growth">Growth Potential</button>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #10b981;"></div>
+            <span>High (≥85)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #f59e0b;"></div>
+            <span>Medium (70-84)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #ef4444;"></div>
+            <span>Low (<70)< /span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div class="table-container fade-in" style="animation-delay: 0.5s">
+        <div class="table-header">
+          <h2 class="table-title">Market Opportunity Scorecard</h2>
+          <button class="export-btn" id="exportBtn" aria-label="Export to CSV">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" style="margin-right: 0.5rem;">
+              <path d="M2 10v3a1 1 0 001 1h10a1 1 0 001-1v-3M8 2v8m0 0L5 7m3 3l3-3" stroke-width="2" />
+            </svg>
+            Export CSV
+          </button>
+        </div>
+        <table class="data-table" id="dataTable" role="table">
+          <thead>
+            <tr role="row">
+              <th role="columnheader" aria-sort="none" data-sort="market">Market <span class="sort-indicator"></span></th>
+              <th role="columnheader" aria-sort="none" data-sort="state">State <span class="sort-indicator"></span></th>
+              <th role="columnheader" aria-sort="descending" data-sort="mos">
+                MOS <span class="sort-indicator">↓</span>
+                <div class="header-tooltip">
+                  <strong>Market Opportunity Score</strong><br>
+                  Composite score (0-100) indicating overall market potential
+                </div>
+              </th>
+              <th role="columnheader" aria-sort="none" data-sort="hmp">
+                HMP
+                <div class="header-tooltip">
+                  <strong>Historical Media Performance</strong><br>
+                  <em>Benefit:</em> Identifies proven ROI markets<br>
+                  <em>Data:</em> Past campaign lift, media efficiency<br>
+                  <em>Calculation:</em> Weighted avg of 3-year performance
+                </div>
+              </th>
+              <th role="columnheader" aria-sort="none" data-sort="ca">
+                CA
+                <div class="header-tooltip">
+                  <strong>Competitive Analysis</strong><br>
+                  <em>Benefit:</em> Finds low-competition opportunities<br>
+                  <em>Data:</em> Competitor SOV, market share<br>
+                  <em>Calculation:</em> Inverse of competitive intensity
+                </div>
+              </th>
+              <th role="columnheader" aria-sort="none" data-sort="cds">
+                CDS
+                <div class="header-tooltip">
+                  <strong>Category Development/Size</strong><br>
+                  <em>Benefit:</em> Reveals high-growth markets<br>
+                  <em>Data:</em> Category sales, growth rate<br>
+                  <em>Calculation:</em> Size × Growth factor
+                </div>
+              </th>
+              <th role="columnheader" aria-sort="none" data-sort="bds">
+                BDS
+                <div class="header-tooltip">
+                  <strong>Brand Development/Size</strong><br>
+                  <em>Benefit:</em> Shows share gain potential<br>
+                  <em>Data:</em> Brand share vs category<br>
+                  <em>Calculation:</em> Inverse of current share
+                </div>
+              </th>
+              <th role="columnheader" aria-sort="none" data-sort="ce">
+                CE
+                <div class="header-tooltip">
+                  <strong>Consumer Engagement</strong><br>
+                  <em>Benefit:</em> Measures consumer readiness<br>
+                  <em>Data:</em> Search trends, social sentiment<br>
+                  <em>Calculation:</em> Engagement index (0-100)
+                </div>
+              </th>
+              <th role="columnheader" aria-sort="none" data-sort="ds">
+                DS
+                <div class="header-tooltip">
+                  <strong>Distribution Strength</strong><br>
+                  <em>Benefit:</em> Ensures execution capability<br>
+                  <em>Data:</em> Numeric distribution, visibility<br>
+                  <em>Calculation:</em> Weighted distribution score
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Table rows will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Sidebar Overlay for Mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Context Menu -->
+  <div class="context-menu" id="contextMenu">
+    <div class="context-menu-item" data-action="edit">Edit Score</div>
+    <div class="context-menu-item" data-action="reset">Reset to Default</div>
+    <div class="context-menu-item" data-action="copy">Copy Value</div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB172KdehUJ8txVFCW57Bq_KtbUQ05YgT8"></script>
+
+  <script>
+    // Application State
+    const AppState = {
+      currentCategory: 'Air Freshener',
+      currentView: 'city',
+      currentPreset: 'balanced',
+      weights: {
+        HMP: 20,
+        CA: 20,
+        CDS: 20,
+        BDS: 15,
+        CE: 15,
+        DS: 10
+      },
+      marketData: {
+        'Air Freshener': {
+          cities: {
+            'Mumbai': {
+              scores: [95, 88, 75, 92, 85, 90],
+              state: 'Maharashtra',
+              summary: 'Mumbai shows exceptional market potential with high scores across all metrics. Strong distribution and media presence make it a prime target for premium product launches.',
+              coordinates: {
+                lat: 19.0760,
+                lng: 72.8777
+              }
+            },
+            'Delhi': {
+              scores: [92, 85, 80, 89, 82, 88],
+              state: 'Delhi',
+              summary: 'A mature market with high awareness and strong competitive presence. Opportunity lies in leveraging creative effectiveness to capture a higher share.',
+              coordinates: {
+                lat: 28.6139,
+                lng: 77.2090
+              }
+            },
+            'Bangalore': {
+              scores: [88, 78, 85, 86, 90, 85],
+              state: 'Karnataka',
+              summary: 'Tech-savvy market with high digital engagement. Premium positioning works well here with focus on eco-friendly and innovative products.',
+              coordinates: {
+                lat: 12.9716,
+                lng: 77.5946
+              }
+            },
+            'Pune': {
+              scores: [82, 75, 78, 83, 88, 82],
+              state: 'Maharashtra',
+              summary: 'Growing market with increasing disposable income. Young demographic presents opportunity for lifestyle-oriented marketing.',
+              coordinates: {
+                lat: 18.5204,
+                lng: 73.8567
+              }
+            },
+            'Hyderabad': {
+              scores: [85, 80, 82, 81, 86, 83],
+              state: 'Telangana',
+              summary: 'Emerging metro with balanced growth across segments. Strong retail presence supports premium product introduction.',
+              coordinates: {
+                lat: 17.3850,
+                lng: 78.4867
+              }
+            },
+            'Chennai': {
+              scores: [78, 82, 76, 79, 75, 80],
+              state: 'Tamil Nadu',
+              summary: 'Traditional market with preference for established brands. Focus on trust-building and regional connect needed.',
+              coordinates: {
+                lat: 13.0827,
+                lng: 80.2707
+              }
+            },
+            'Kolkata': {
+              scores: [75, 70, 72, 74, 70, 75],
+              state: 'West Bengal',
+              summary: 'Price-sensitive market requiring value-oriented strategies. Strong word-of-mouth culture can be leveraged.',
+              coordinates: {
+                lat: 22.5726,
+                lng: 88.3639
+              }
+            },
+            'Ahmedabad': {
+              scores: [80, 77, 75, 78, 82, 79],
+              state: 'Gujarat',
+              summary: 'Business-oriented city with growing modern retail. Opportunity in premium segment with family-pack offerings.',
+              coordinates: {
+                lat: 23.0225,
+                lng: 72.5714
+              }
+            },
+            'Jaipur': {
+              scores: [72, 68, 70, 73, 74, 71],
+              state: 'Rajasthan',
+              summary: 'Tourist hub with seasonal demand patterns. Focus on hospitality sector and festive marketing can drive growth.',
+              coordinates: {
+                lat: 26.9124,
+                lng: 75.7873
+              }
+            },
+            'Lucknow': {
+              scores: [70, 65, 68, 71, 69, 70],
+              state: 'Uttar Pradesh',
+              summary: 'Traditional market transitioning to modern retail. Building distribution strength is key to unlock potential.',
+              coordinates: {
+                lat: 26.8467,
+                lng: 80.9462
+              }
+            },
+            'Bhopal': {
+              scores: [68, 62, 65, 67, 66, 68],
+              state: 'Madhya Pradesh',
+              summary: 'Emerging market with improving infrastructure. Focus on awareness building and trial generation needed.',
+              coordinates: {
+                lat: 23.2599,
+                lng: 77.4126
+              }
+            },
+            'Chandigarh': {
+              scores: [76, 72, 74, 75, 78, 76],
+              state: 'Punjab',
+              summary: 'Affluent market with high lifestyle aspiration. Premium positioning with modern trade focus recommended.',
+              coordinates: {
+                lat: 30.7333,
+                lng: 76.7794
+              }
+            },
+            'Patna': {
+              scores: [65, 60, 63, 66, 64, 65],
+              state: 'Bihar',
+              summary: 'Developing market with growing awareness. Investment in distribution and local connect can unlock potential.',
+              coordinates: {
+                lat: 25.5941,
+                lng: 85.1376
+              }
+            }
+          }
+        },
+        'Hair Color': {
+          cities: {
+            'Mumbai': {
+              scores: [90, 85, 88, 87, 92, 88],
+              state: 'Maharashtra',
+              summary: 'Fashion-forward market with high acceptance of hair color products. Premium and natural variants perform well.',
+              coordinates: {
+                lat: 19.0760,
+                lng: 72.8777
+              }
+            },
+            'Delhi': {
+              scores: [88, 82, 85, 84, 89, 86],
+              state: 'Delhi',
+              summary: 'Trend-conscious market with strong salon culture. Opportunity in professional and DIY segments.',
+              coordinates: {
+                lat: 28.6139,
+                lng: 77.2090
+              }
+            },
+            'Bangalore': {
+              scores: [92, 88, 90, 89, 94, 90],
+              state: 'Karnataka',
+              summary: 'Cosmopolitan market with high experimentation. International trends quickly adopted here.',
+              coordinates: {
+                lat: 12.9716,
+                lng: 77.5946
+              }
+            },
+            'Pune': {
+              scores: [85, 80, 82, 81, 86, 83],
+              state: 'Maharashtra',
+              summary: 'Young demographic driving category growth. Focus on fashion colors and temporary variants.',
+              coordinates: {
+                lat: 18.5204,
+                lng: 73.8567
+              }
+            },
+            'Hyderabad': {
+              scores: [83, 78, 80, 79, 84, 81],
+              state: 'Telangana',
+              summary: 'Growing acceptance in both genders. Natural and herbal positioning resonates well.',
+              coordinates: {
+                lat: 17.3850,
+                lng: 78.4867
+              }
+            },
+            'Chennai': {
+              scores: [75, 70, 72, 73, 76, 74],
+              state: 'Tamil Nadu',
+              summary: 'Conservative approach to hair color. Focus on natural black and brown shades.',
+              coordinates: {
+                lat: 13.0827,
+                lng: 80.2707
+              }
+            },
+            'Kolkata': {
+              scores: [78, 73, 75, 76, 79, 77],
+              state: 'West Bengal',
+              summary: 'Traditional market with growing modern influence. Value packs and festive offers work well.',
+              coordinates: {
+                lat: 22.5726,
+                lng: 88.3639
+              }
+            },
+            'Ahmedabad': {
+              scores: [76, 71, 73, 74, 77, 75],
+              state: 'Gujarat',
+              summary: 'Family-oriented purchase decisions. Multi-packs and gentle formulations preferred.',
+              coordinates: {
+                lat: 23.0225,
+                lng: 72.5714
+              }
+            },
+            'Jaipur': {
+              scores: [70, 65, 67, 68, 71, 69],
+              state: 'Rajasthan',
+              summary: 'Growing awareness with wedding season peaks. Traditional colors dominate.',
+              coordinates: {
+                lat: 26.9124,
+                lng: 75.7873
+              }
+            },
+            'Lucknow': {
+              scores: [68, 63, 65, 66, 69, 67],
+              state: 'Uttar Pradesh',
+              summary: 'Emerging category acceptance. Focus on education and trial generation.',
+              coordinates: {
+                lat: 26.8467,
+                lng: 80.9462
+              }
+            },
+            'Bhopal': {
+              scores: [65, 60, 62, 63, 66, 64],
+              state: 'Madhya Pradesh',
+              summary: 'Early stage market. Building trust through salon partnerships recommended.',
+              coordinates: {
+                lat: 23.2599,
+                lng: 77.4126
+              }
+            },
+            'Chandigarh': {
+              scores: [80, 75, 77, 78, 82, 79],
+              state: 'Punjab',
+              summary: 'Fashion-conscious with international exposure. Premium and fashion shades have potential.',
+              coordinates: {
+                lat: 30.7333,
+                lng: 76.7794
+              }
+            },
+            'Patna': {
+              scores: [62, 57, 59, 60, 63, 61],
+              state: 'Bihar',
+              summary: 'Nascent market with basic usage. Focus on natural black variants and affordability.',
+              coordinates: {
+                lat: 25.5941,
+                lng: 85.1376
+              }
+            }
+          }
+        }
+      },
+      presets: {
+        growth: {
+          HMP: 25,
+          CA: 15,
+          CDS: 25,
+          BDS: 15,
+          CE: 15,
+          DS: 5
+        },
+        defensive: {
+          HMP: 30,
+          CA: 25,
+          CDS: 15,
+          BDS: 10,
+          CE: 10,
+          DS: 10
+        },
+        balanced: {
+          HMP: 20,
+          CA: 20,
+          CDS: 20,
+          BDS: 15,
+          CE: 15,
+          DS: 10
+        },
+        innovation: {
+          HMP: 15,
+          CA: 15,
+          CDS: 15,
+          BDS: 20,
+          CE: 25,
+          DS: 10
+        }
+      },
+      sortColumn: 'mos',
+      sortDirection: 'desc',
+      map: null,
+      markers: [],
+      countrySettings: {
+        IN: {
+          center: {
+            lat: 20.5937,
+            lng: 78.9629
+          },
+          zoom: 4.5,
+          name: 'India'
+        },
+        ID: {
+          center: {
+            lat: -2.5489,
+            lng: 118.0149
+          },
+          zoom: 5,
+          name: 'Indonesia'
+        },
+        ZA: {
+          center: {
+            lat: -30.5595,
+            lng: 22.9375
+          },
+          zoom: 5.5,
+          name: 'South Africa'
+        },
+        AR: {
+          center: {
+            lat: -38.4161,
+            lng: -63.6167
+          },
+          zoom: 4.5,
+          name: 'Argentina'
+        }
+      },
+      currentCountry: 'IN'
+    };
+    // Utility Functions
+    const Utils = {
+      calculateMOS: (scores, weights) => {
+        const weightArray = [weights.HMP, weights.CA, weights.CDS, weights.BDS, weights.CE, weights.DS];
+        return scores.reduce((sum, score, index) => sum + (score * weightArray[index] / 100), 0);
+      },
+      getScoreClass: (score) => {
+        if (score >= 85) return 'green';
+        if (score >= 70) return 'yellow';
+        return 'red';
+      },
+      formatNumber: (num) => {
+        return Math.round(num * 10) / 10;
+      },
+      saveToLocalStorage: () => {
+        const state = {
+          category: AppState.currentCategory,
+          view: AppState.currentView,
+          preset: AppState.currentPreset,
+          weights: AppState.weights
+        };
+        localStorage.setItem('meridienState', JSON.stringify(state));
+      },
+      loadFromLocalStorage: () => {
+        const saved = localStorage.getItem('meridienState');
+        if (saved) {
+          const state = JSON.parse(saved);
+          AppState.currentCategory = state.category;
+          AppState.currentView = state.view;
+          AppState.currentPreset = state.preset;
+          AppState.weights = state.weights;
+        }
+      },
+      showToast: (message, type = 'success') => {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `
+                    ${type === 'success' ? '✓' : '!'} ${message}
+                `;
+        document.getElementById('toastContainer').appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      },
+      exportToCSV: () => {
+        const data = AppState.currentView === 'city' ?
+          AppState.marketData[AppState.currentCategory].cities :
+          Utils.aggregateStateData();
+        let csv = 'Market,State,MOS,HMP,CA,CDS,BDS,CE,DS\n';
+        Object.entries(data).forEach(([market, info]) => {
+          const mos = Utils.calculateMOS(info.scores, AppState.weights);
+          csv += `${market},${info.state},${Utils.formatNumber(mos)},${info.scores.join(',')}\n`;
+        });
+        const blob = new Blob([csv], {
+          type: 'text/csv'
+        });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `meridien-${AppState.currentCategory}-${AppState.currentView}-${Date.now()}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        Utils.showToast('Data exported successfully!');
+      },
+      aggregateStateData: () => {
+        const cityData = AppState.marketData[AppState.currentCategory].cities;
+        const stateData = {};
+        Object.entries(cityData).forEach(([city, data]) => {
+          const state = data.state;
+          if (!stateData[state]) {
+            stateData[state] = {
+              scores: [0, 0, 0, 0, 0, 0],
+              cities: [],
+              state: state,
+              summary: `Aggregated data for ${state} state.`
+            };
+          }
+          stateData[state].cities.push(city);
+          data.scores.forEach((score, index) => {
+            stateData[state].scores[index] += score;
+          });
+        });
+        // Calculate averages
+        Object.values(stateData).forEach(state => {
+          const cityCount = state.cities.length;
+          state.scores = state.scores.map(score => Math.round(score / cityCount));
+        });
+        return stateData;
+      }
+    };
+    // UI Components
+    const UI = {
+      initializeWeightSliders: () => {
+        const container = document.getElementById('weightSliders');
+        container.innerHTML = '';
+        Object.entries(AppState.weights).forEach(([key, value]) => {
+          const weightGroup = document.createElement('div');
+          weightGroup.className = 'weight-group';
+          weightGroup.innerHTML = `
+                        <div class="weight-header">
+                            <span class="weight-label tooltip">
+                                ${key}
+                                <span class="tooltip-content">Click for details</span>
+                            </span>
+                            <span class="weight-value">${value}%</span>
+                        </div>
+                        <input type="range" class="weight-slider" 
+                               id="weight-${key}" 
+                               min="0" max="50" value="${value}"
+                               aria-label="${key} weight">
+                    `;
+          container.appendChild(weightGroup);
+          const slider = weightGroup.querySelector('.weight-slider');
+          const valueDisplay = weightGroup.querySelector('.weight-value');
+          slider.addEventListener('input', (e) => {
+            const newValue = parseInt(e.target.value);
+            AppState.weights[key] = newValue;
+            valueDisplay.textContent = `${newValue}%`;
+            UI.updateTable();
+            UI.updateStats();
+          });
+        });
+      },
+      updateTable: () => {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        const data = AppState.currentView === 'city' ?
+          AppState.marketData[AppState.currentCategory].cities :
+          Utils.aggregateStateData();
+        // Convert to array and sort
+        let sortedData = Object.entries(data).map(([market, info]) => ({
+          market,
+          ...info,
+          mos: Utils.calculateMOS(info.scores, AppState.weights)
+        }));
+        // Sort logic
+        if (AppState.sortColumn === 'mos') {
+          sortedData.sort((a, b) => AppState.sortDirection === 'asc' ? a.mos - b.mos : b.mos - a.mos);
+        } else if (AppState.sortColumn === 'market') {
+          sortedData.sort((a, b) => AppState.sortDirection === 'asc' ?
+            a.market.localeCompare(b.market) : b.market.localeCompare(a.market));
+        } else if (AppState.sortColumn === 'state') {
+          sortedData.sort((a, b) => AppState.sortDirection === 'asc' ?
+            a.state.localeCompare(b.state) : b.state.localeCompare(a.state));
+        } else {
+          const scoreIndex = ['hmp', 'ca', 'cds', 'bds', 'ce', 'ds'].indexOf(AppState.sortColumn);
+          if (scoreIndex !== -1) {
+            sortedData.sort((a, b) => AppState.sortDirection === 'asc' ?
+              a.scores[scoreIndex] - b.scores[scoreIndex] : b.scores[scoreIndex] - a.scores[scoreIndex]);
+          }
+        }
+        sortedData.forEach((item, index) => {
+          const row = document.createElement('tr');
+          row.className = 'expandable';
+          row.setAttribute('role', 'row');
+          row.setAttribute('tabindex', '0');
+          row.setAttribute('aria-expanded', 'false');
+          const mosClass = Utils.getScoreClass(item.mos);
+          row.innerHTML = `
+                        <td>${item.market}</td>
+                        <td>${item.state}</td>
+                        <td>
+                            <div class="mos-cell">
+                                <span class="score-cell ${mosClass}">${Utils.formatNumber(item.mos)}</span>
+                                <div class="mos-progress">
+                                    <div class="mos-progress-bar" style="width: ${item.mos}%"></div>
+                                </div>
+                            </div>
+                        </td>
+                        ${item.scores.map((score, i) => `
+                            <td>
+                                <span class="score-cell ${Utils.getScoreClass(score)}" 
+                                      data-market="${item.market}" 
+                                      data-metric="${i}"
+                                      tabindex="0"
+                                      role="button"
+                                      aria-label="Edit ${['HMP', 'CA', 'CDS', 'BDS', 'CE', 'DS'][i]} score">
+                                    ${score}
+                                </span>
+                            </td>
+                        `).join('')}
+                    `;
+          tbody.appendChild(row);
+          // Add expanded row
+          const expandedRow = document.createElement('tr');
+          expandedRow.className = 'expanded-row';
+          expandedRow.innerHTML = `
+                        <td colspan="9">
+                            <div class="expanded-content">
+                                <div class="expanded-header">${item.market} - Detailed Analysis</div>
+                                <div class="metric-grid">
+                                    <div class="metric-item">
+                                        <div class="metric-label">Market Rank</div>
+                                        <div class="metric-value">#${index + 1}</div>
+                                    </div>
+                                    <div class="metric-item">
+                                        <div class="metric-label">MOS Score</div>
+                                        <div class="metric-value">${Utils.formatNumber(item.mos)}</div>
+                                    </div>
+                                    <div class="metric-item">
+                                        <div class="metric-label">Performance Tier</div>
+                                        <div class="metric-value">${mosClass.charAt(0).toUpperCase() + mosClass.slice(1)}</div>
+                                    </div>
+                                    <div class="metric-item">
+                                        <div class="metric-label">Opportunity Level</div>
+                                        <div class="metric-value">${item.mos >= 85 ? 'High' : item.mos >= 70 ? 'Medium' : 'Low'}</div>
+                                    </div>
+                                </div>
+                                <div class="market-summary">
+                                    <strong>Market Summary:</strong> ${item.summary}
+                                </div>
+                            </div>
+                        </td>
+                    `;
+          tbody.appendChild(expandedRow);
+          // Row click handler
+          row.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('score-cell')) {
+              row.classList.toggle('expanded');
+              expandedRow.classList.toggle('show');
+              const isExpanded = expandedRow.classList.contains('show');
+              row.setAttribute('aria-expanded', isExpanded);
+            }
+          });
+          // Keyboard navigation
+          row.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              row.click();
+            }
+          });
+        });
+        // Add score cell click handlers
+        document.querySelectorAll('.score-cell[data-market]').forEach(cell => {
+          cell.addEventListener('click', UI.handleScoreEdit);
+          cell.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              UI.handleScoreEdit(e);
+            }
+          });
+        });
+      },
+      handleScoreEdit: (e) => {
+        const cell = e.target;
+        if (cell.classList.contains('editing')) return;
+        const market = cell.dataset.market;
+        const metricIndex = parseInt(cell.dataset.metric);
+        const currentValue = parseInt(cell.textContent);
+        cell.classList.add('editing');
+        cell.innerHTML = `<input type="number" class="score-input" value="${currentValue}" min="0" max="100">`;
+        const input = cell.querySelector('.score-input');
+        input.focus();
+        input.select();
+        const saveEdit = () => {
+          const newValue = Math.min(100, Math.max(0, parseInt(input.value) || 0));
+          if (AppState.currentView === 'city') {
+            AppState.marketData[AppState.currentCategory].cities[market].scores[metricIndex] = newValue;
+          }
+          cell.classList.remove('editing');
+          UI.updateTable();
+          UI.updateStats();
+          Utils.showToast(`Score updated for ${market}`);
+        };
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            cell.classList.remove('editing');
+            cell.innerHTML = currentValue;
+          }
+        });
+      },
+      updateStats: () => {
+        const data = AppState.currentView === 'city' ?
+          AppState.marketData[AppState.currentCategory].cities :
+          Utils.aggregateStateData();
+        const mosScores = Object.entries(data).map(([market, info]) => ({
+          market,
+          mos: Utils.calculateMOS(info.scores, AppState.weights)
+        }));
+        const totalMarkets = mosScores.length;
+        const avgMOS = mosScores.reduce((sum, item) => sum + item.mos, 0) / totalMarkets;
+        // Sort markets by MOS for top 3
+        const topMarkets = mosScores.sort((a, b) => b.mos - a.mos).slice(0, 3);
+        document.getElementById('totalMarkets').textContent = totalMarkets;
+        document.getElementById('averageMOS').textContent = Utils.formatNumber(avgMOS);
+        // Update top 3 markets
+        const topListHTML = topMarkets.map((market, index) =>
+          `<div class="top-market-item">${index + 1}. ${market.market} <span>${Utils.formatNumber(market.mos)}</span></div>`
+        ).join('');
+        document.getElementById('topOpportunityList').innerHTML = topListHTML;
+        UI.updateInsights(mosScores);
+      },
+      updateInsights: (mosScores) => {
+        const highPerformers = mosScores.filter(m => m.mos >= 85).length;
+        const mediumPerformers = mosScores.filter(m => m.mos >= 70 && m.mos < 85).length;
+        const lowPerformers = mosScores.filter(m => m.mos < 70).length;
+        let insightText = '';
+        let recommendation = '';
+        if (highPerformers > mosScores.length * 0.5) {
+          insightText = `Your portfolio shows exceptional strength with ${highPerformers} markets scoring above 85. This indicates strong market receptiveness and established presence.`;
+          recommendation = `Focus on market share gains in high-performing markets through innovative campaigns. Consider premium product launches in top 3 markets.`;
+        } else if (mediumPerformers > mosScores.length * 0.5) {
+          insightText = `Balanced portfolio with ${mediumPerformers} markets in the 70-84 range. These markets show steady potential with room for growth.`;
+          recommendation = `Invest in targeted media campaigns to push medium performers into the high category. Focus on distribution improvements and consumer engagement.`;
+        } else {
+          insightText = `Portfolio requires attention with ${lowPerformers} markets below 70. Significant opportunity exists for market development.`;
+          recommendation = `Prioritize market development activities. Start with pilot programs in 2-3 markets to test strategies before broader rollout.`;
+        }
+        document.getElementById('insightsContent').innerHTML = `
+                    <p>${insightText}</p>
+                    <div class="insight-recommendation">
+                        <strong>Recommendation:</strong> ${recommendation}
+                    </div>
+                `;
+      },
+      updateBreadcrumb: () => {
+        const countryCode = AppState.currentCountry || 'IN';
+        const countryName = AppState.countrySettings[countryCode].name;
+        /*document.getElementById('breadcrumb-country').textContent = countryCode;*/
+        document.getElementById('breadcrumb-category').textContent = AppState.currentCategory;
+        document.getElementById('breadcrumb-view').textContent = AppState.currentView === 'city' ? 'City Level' : 'State Level';
+        document.getElementById('breadcrumb-status').textContent = `${countryName} Markets`;
+      },
+      initializeMap: () => {
+        const mapElement = document.getElementById('map');
+        const countrySettings = AppState.countrySettings[AppState.currentCountry];
+        AppState.map = new google.maps.Map(mapElement, {
+          center: countrySettings.center,
+          zoom: countrySettings.zoom,
+          styles: [{
+              featureType: "all",
+              elementType: "geometry.fill",
+              stylers: [{
+                weight: "2.00"
+              }]
+            },
+            {
+              featureType: "landscape",
+              elementType: "all",
+              stylers: [{
+                color: "#f2f2f2"
+              }]
+            },
+            {
+              featureType: "water",
+              elementType: "all",
+              stylers: [{
+                color: "#blue"
+              }, {
+                visibility: "on"
+              }]
+            }
+          ]
+        });
+        UI.updateMapMarkers();
+      },
+      updateMapMarkers: () => {
+        // Clear existing markers
+        AppState.markers.forEach(marker => marker.setMap(null));
+        AppState.markers = [];
+        const data = AppState.marketData[AppState.currentCategory].cities;
+        Object.entries(data).forEach(([city, info]) => {
+          const mos = Utils.calculateMOS(info.scores, AppState.weights);
+          const mosClass = Utils.getScoreClass(mos);
+          const markerColor = mosClass === 'green' ? '#10b981' :
+            mosClass === 'yellow' ? '#f59e0b' : '#ef4444';
+          const marker = new google.maps.Marker({
+            position: info.coordinates,
+            map: AppState.map,
+            title: `${city}: MOS ${Utils.formatNumber(mos)}`,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: markerColor,
+              fillOpacity: 0.8,
+              strokeColor: 'white',
+              strokeWeight: 2
+            }
+          });
+          const infoWindow = new google.maps.InfoWindow({
+            content: `
+                            <div style="padding: 10px;">
+                                <h4 style="margin: 0 0 5px 0;">${city}</h4>
+                                <p style="margin: 5px 0;">MOS Score: <strong>${Utils.formatNumber(mos)}</strong></p>
+                                <p style="margin: 5px 0; font-size: 12px;">${info.summary}</p>
+                            </div>
+                        `
+          });
+          marker.addListener('click', () => {
+            infoWindow.open(AppState.map, marker);
+          });
+          AppState.markers.push(marker);
+        });
+      }
+    };
+    // Event Handlers
+    const EventHandlers = {
+      init: () => {
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+          document.getElementById('sidebar').classList.toggle('open');
+          document.getElementById('sidebarOverlay').classList.toggle('show');
+        });
+        document.getElementById('sidebarOverlay').addEventListener('click', () => {
+          document.getElementById('sidebar').classList.remove('open');
+          document.getElementById('sidebarOverlay').classList.remove('show');
+        });
+        // Strategy presets
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const preset = btn.dataset.preset;
+            // Update active state
+            document.querySelectorAll('.preset-btn').forEach(b => {
+              b.classList.remove('active');
+              b.setAttribute('aria-pressed', 'false');
+            });
+            btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
+            // Apply preset weights
+            AppState.currentPreset = preset;
+            AppState.weights = {
+              ...AppState.presets[preset]
+            };
+            UI.initializeWeightSliders();
+            UI.updateTable();
+            UI.updateStats();
+            UI.updateBreadcrumb();
+            Utils.saveToLocalStorage();
+            Utils.showToast(`Applied ${preset} strategy`);
+          });
+        });
+        // Category and view selects
+        document.getElementById('categorySelect').addEventListener('change', (e) => {
+          AppState.currentCategory = e.target.value;
+          UI.updateTable();
+          UI.updateStats();
+          UI.updateBreadcrumb();
+          UI.updateMapMarkers();
+          Utils.saveToLocalStorage();
+        });
+        document.getElementById('viewSelect').addEventListener('change', (e) => {
+          AppState.currentView = e.target.value;
+          UI.updateTable();
+          UI.updateStats();
+          UI.updateBreadcrumb();
+          Utils.saveToLocalStorage();
+        });
+        // Country selector
+        document.getElementById('countrySelect').addEventListener('change', (e) => {
+          const country = e.target.value;
+          AppState.currentCountry = country;
+          // Update map to new country
+          const settings = AppState.countrySettings[country];
+          if (AppState.map && settings) {
+            // Animate to new country
+            AppState.map.panTo(settings.center);
+            setTimeout(() => {
+              AppState.map.setZoom(settings.zoom);
+            }, 300);
+            // Clear existing markers
+            AppState.markers.forEach(marker => marker.setMap(null));
+            AppState.markers = [];
+            // If switching back to India, restore the markers
+            if (country === 'IN') {
+              setTimeout(() => {
+                UI.updateMapMarkers();
+              }, 500); // Wait for map animation to complete
+            }
+            // Show notification
+            Utils.showToast(`Switched to ${settings.name} market view`);
+            // Update breadcrumb to show country
+            // document.getElementById('breadcrumb-status').textContent = `${settings.name} Markets`;
+            // Update breadcrumb
+            UI.updateBreadcrumb();
+          }
+          Utils.saveToLocalStorage();
+        });
+        // Action buttons
+        document.getElementById('recalculateBtn').addEventListener('click', () => {
+          UI.updateTable();
+          UI.updateStats();
+          UI.updateMapMarkers();
+          Utils.showToast('MOS recalculated successfully');
+        });
+        document.getElementById('resetWeightsBtn').addEventListener('click', () => {
+          AppState.weights = {
+            ...AppState.presets.balanced
+          };
+          AppState.currentPreset = 'balanced';
+          document.querySelectorAll('.preset-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-pressed', 'false');
+          });
+          document.querySelector('[data-preset="balanced"]').classList.add('active');
+          document.querySelector('[data-preset="balanced"]').setAttribute('aria-pressed', 'true');
+          UI.initializeWeightSliders();
+          UI.updateTable();
+          UI.updateStats();
+          UI.updateBreadcrumb();
+          Utils.saveToLocalStorage();
+          Utils.showToast('Weights reset to balanced');
+        });
+        // Export button
+        document.getElementById('exportBtn').addEventListener('click', Utils.exportToCSV);
+        // Methodology toggle
+        document.getElementById('methodologyToggle').addEventListener('click', () => {
+          const toggle = document.getElementById('methodologyToggle');
+          const content = document.getElementById('methodologyContent');
+          toggle.classList.toggle('open');
+          content.classList.toggle('show');
+        });
+        // Table sorting
+        document.querySelectorAll('.data-table th').forEach(th => {
+          th.addEventListener('click', () => {
+            const sortKey = th.dataset.sort;
+            if (!sortKey) return;
+            // Update sort direction
+            if (AppState.sortColumn === sortKey) {
+              AppState.sortDirection = AppState.sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+              AppState.sortColumn = sortKey;
+              AppState.sortDirection = 'desc';
+            }
+            // Update sort indicators
+            document.querySelectorAll('.data-table th').forEach(header => {
+              header.setAttribute('aria-sort', 'none');
+              header.querySelector('.sort-indicator').textContent = '';
+            });
+            th.setAttribute('aria-sort', AppState.sortDirection === 'asc' ? 'ascending' : 'descending');
+            th.querySelector('.sort-indicator').textContent = AppState.sortDirection === 'asc' ? '↑' : '↓';
+            UI.updateTable();
+          });
+        });
+        // Map control buttons
+        document.querySelectorAll('.map-control-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // In a real implementation, this would update the map visualization
+            Utils.showToast(`Showing ${btn.dataset.metric} on map`);
+          });
+        });
+        // Keyboard navigation for table
+        document.addEventListener('keydown', (e) => {
+          if (e.target.closest('.data-table')) {
+            const currentRow = e.target.closest('tr');
+            if (!currentRow) return;
+            switch (e.key) {
+              case 'ArrowUp':
+                e.preventDefault();
+                const prevRow = currentRow.previousElementSibling;
+                if (prevRow && prevRow.classList.contains('expandable')) {
+                  prevRow.focus();
+                }
+                break;
+              case 'ArrowDown':
+                e.preventDefault();
+                const nextRow = currentRow.nextElementSibling;
+                if (nextRow && nextRow.classList.contains('expandable')) {
+                  nextRow.focus();
+                }
+                break;
+            }
+          }
+        });
+        // Context menu
+        document.addEventListener('contextmenu', (e) => {
+          if (e.target.classList.contains('score-cell') && e.target.dataset.market) {
+            e.preventDefault();
+            const menu = document.getElementById('contextMenu');
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+            menu.classList.add('show');
+            menu.dataset.target = e.target.dataset.market + '|' + e.target.dataset.metric;
+          }
+        });
+        document.addEventListener('click', () => {
+          document.getElementById('contextMenu').classList.remove('show');
+        });
+        document.querySelectorAll('.context-menu-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            const action = e.target.dataset.action;
+            const menu = document.getElementById('contextMenu');
+            const [market, metric] = menu.dataset.target.split('|');
+            switch (action) {
+              case 'edit':
+                const cell = document.querySelector(`[data-market="${market}"][data-metric="${metric}"]`);
+                cell.click();
+                break;
+              case 'reset':
+                // Reset to original value (would need to store original values)
+                Utils.showToast('Score reset to default');
+                break;
+              case 'copy':
+                const value = document.querySelector(`[data-market="${market}"][data-metric="${metric}"]`).textContent;
+                navigator.clipboard.writeText(value);
+                Utils.showToast('Value copied to clipboard');
+                break;
+            }
+          });
+        });
+        // Auto-save on window unload
+        window.addEventListener('beforeunload', Utils.saveToLocalStorage);
+      }
+    };
+    // Initialize Application
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load saved state
+      Utils.loadFromLocalStorage();
+      // Set initial UI state
+      document.getElementById('categorySelect').value = AppState.currentCategory;
+      document.getElementById('viewSelect').value = AppState.currentView;
+      document.querySelector(`[data-preset="${AppState.currentPreset}"]`).classList.add('active');
+      // Initialize components
+      UI.initializeWeightSliders();
+      UI.updateTable();
+      UI.updateStats();
+      UI.updateBreadcrumb();
+      UI.initializeMap();
+      // Initialize event handlers
+      EventHandlers.init();
+      // Show welcome message
+      if (!localStorage.getItem('meridienVisited')) {
+        Utils.showToast('Welcome to Project Meridien Dashboard!');
+        localStorage.setItem('meridienVisited', 'true');
+      }
+      // Performance monitoring
+      if ('PerformanceObserver' in window) {
+        const perfObserver = new PerformanceObserver((list) => {
+          list.getEntries().forEach((entry) => {
+            if (entry.duration > 100) {
+              console.warn('Slow interaction detected:', entry.name, entry.duration);
+            }
+          });
+        });
+        perfObserver.observe({
+          entryTypes: ['measure']
+        });
+      }
+      // Service worker for offline support (in production)
+      if ('serviceWorker' in navigator && location.protocol === 'https:') {
+        // navigator.serviceWorker.register('/sw.js');
+      }
+    });
+    // Cleanup on unload
+    window.addEventListener('unload', () => {
+      if (AppState.map) {
+        AppState.markers.forEach(marker => marker.setMap(null));
+      }
+    });
+  </script>
+</body>
+
+</html>
